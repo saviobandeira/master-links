@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import SessionProvier from '@/app/SessionProvider';
 import './globals.css';
 
 const geistSans = Geist({
@@ -27,11 +28,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-screen min-h-screen`}
       >
-        <div className='flex flex-col items-center'>
-          <div className=' max-w-xl w-full px-6 py-16'>
-            {children}
+        <SessionProvier>
+          <div className='flex flex-col items-center'>
+            <div className=' max-w-xl w-full px-6 py-16'>
+              {children}
+            </div>
           </div>
-        </div>
+        </SessionProvier>
       </body>
     </html>
   );
