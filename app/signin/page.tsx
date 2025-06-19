@@ -1,14 +1,20 @@
 "use client";
-import { signIn } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function SignInPage() {
+  const router = useRouter();
+
+  const { data: session } = useSession();
+  if (session) {
+    router.push('/admin');
+  }
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
