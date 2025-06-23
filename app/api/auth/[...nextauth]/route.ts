@@ -1,5 +1,8 @@
-import NextAuth from 'next-auth';
+import NextAuth, {
+    SessionStrategy
+} from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+
 
 const options = {
     providers: [
@@ -18,7 +21,10 @@ const options = {
                 const USERNAME = process.env.APP_USERNAME;
                 const PASSWORD = process.env.APP_PASSWORD;
 
-                const user = { id: credentials.username, username: credentials.username }
+                const user = {
+                    id: credentials.username,
+                    username: credentials.username, token: null
+                }
 
                 if (
                     credentials.username === USERNAME &&
@@ -34,9 +40,16 @@ const options = {
     pages: {
         signIn: '/auth/signin',
         signOut: '/auth/signout'
+    },
+    session: {
+        strategy: 'jwt' as SessionStrategy,
+        maxAge: 60 * 60,
+    },
+    jwt: {
+        maxAge: 60 * 60,
     }
 }
 
 const handler = NextAuth(options);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST, options as authOptions }
