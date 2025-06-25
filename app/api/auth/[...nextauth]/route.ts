@@ -23,7 +23,7 @@ const options = {
 
                 const user = {
                     id: credentials.username,
-                    username: credentials.username, token: null
+                    username: credentials.username,
                 }
 
                 if (
