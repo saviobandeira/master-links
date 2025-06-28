@@ -41,6 +41,15 @@ Instale as dependências:
 npm install
 ```
 
+Configure as variáveis de ambiente:
+   
+Copie o arquivo `.env.example` para `.env` na raiz do projeto e preencha as variáveis conforme necessário:
+
+```bash
+cp .env.example .env
+```
+Edite o arquivo `.env` com os valores corretos para sua configuração local.
+
 Inicie o servidor de desenvolvimento:
 
 ```bash
