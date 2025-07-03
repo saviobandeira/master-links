@@ -1,0 +1,45 @@
+[
+    {
+        "category": "default",
+        "items": [
+            {
+                "name": "GitHub",
+                "url": "https://github.com/saviobandeira"
+            },
+            {
+                "name": "Linkedin",
+                "url": "https://www.linkedin.com/in/savio-bandeira-79760620b/"
+            },
+            {
+                "name": "Instagram",
+                "url": "https://www.instagram.com/savio.band/"
+            },
+            {
+                "name": "Portifólio Online",
+                "url": "https://www.saviobandeira.com/"
+            }
+        ]
+    },
+    {
+        "category": "projetos online",
+        "items": [
+            {
+                "name": "link-in-bio customizado",
+                "url": "https://paulotrindade.vercel.app/"
+            }
+        ]
+    },
+    {
+        "category": "código-fonte",
+        "items": [
+            {
+                "name": "Sistema de Auto Atendimento pelo Whatsapp",
+                "url": "https://github.com/saviobandeira/pedeja_wppbot"
+            },
+            {
+                "name": "Sistema Full-Stack para autenticação de usuario com FastAPI/JWT",
+                "url": "https://github.com/saviobandeira/user-authentication"
+            }
+        ]
+    }
+]
