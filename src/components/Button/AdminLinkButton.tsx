@@ -8,7 +8,7 @@ export default function AdminLinkButton() {
 
     return (
         <button 
-            onClick={() => router.push('/signin')}
+            onClick={() => router.push('/login')}
             className='absolute top-0 right-0 m-8'
         >
             <div className='flex justify-center items-center rounded-full cursor-pointer p-2 bg-details'> 

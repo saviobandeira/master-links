@@ -11,7 +11,7 @@ export default async function PrivateLayout({
     const session = await getServerSession(authOptions)
 
     if (!session) {
-        redirect('/signin');
+        redirect('/login');
     }
 
     return (
