@@ -1,4 +1,4 @@
-import LinkButton from '@/app/components/Links/LinkButton';
+import LinkButton from '@/src/components/Links/LinkButton';
 
 
 export default function LinkSection() {

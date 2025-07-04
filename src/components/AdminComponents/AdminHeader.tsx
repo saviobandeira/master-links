@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import AdminLinkButton from '@/app/components/Button/AdminLinkButton';
+import SignOutButton from '@/src/components/Button/SignOutButton';
 
 
-export default function Header() {
+export default function AdminHeader() {
     return (
         <header className='flex flex-col items-center pb-8'>
-            <AdminLinkButton />
+            <SignOutButton />
             <div>
                 <Image
                     className=' w-24 h-24 rounded-full mb-4'

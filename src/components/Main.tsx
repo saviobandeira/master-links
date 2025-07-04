@@ -1,4 +1,4 @@
-import LinkSection from '@/app/components/Links/LinkSection'
+import LinkSection from '@/src/components/Links/LinkSection'
 
 
 export default function Main() {
