@@ -16,7 +16,7 @@ type DataType = {
 const dataPath = join(process.cwd(), 'src/data/externalLinks.json');
 
 function readData() {
-    if (!existsSync(dataPath)) return {};
+    if (!existsSync(dataPath)) return [];
     const data = readFileSync(dataPath, 'utf-8');
     const result: DataType[] = JSON.parse(data);
     return result;
