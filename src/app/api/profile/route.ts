@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 
-type ProfileData = {
+type ProfileDataType = {
     name: string;
     description: string;
 }
@@ -15,7 +15,7 @@ const dataPath = path.join(process.cwd(), 'src/data/profile.json');
 function readData() {
     if (!fs.existsSync(dataPath)) return {};
     const data = fs.readFileSync(dataPath, 'utf-8');
-    const result: ProfileData = JSON.parse(data);
+    const result: ProfileDataType = JSON.parse(data);
     return result;
 }
 
@@ -27,7 +27,7 @@ export async function GET() {
 function writeData({
     name,
     description
-}: ProfileData) {
+}: ProfileDataType) {
     try {
         fs.writeFileSync(dataPath, JSON.stringify({
             name,
@@ -40,6 +40,14 @@ function writeData({
     }
 }
 
+function isProfileDataType(obj: any) {
+    return (
+        obj &&
+        typeof obj.name === 'string' &&
+        typeof obj.description === 'string'
+    )
+}
+
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -49,7 +57,7 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    let body;
+    let body: ProfileDataType;
     try {
         body = await req.json();
     } catch (error) {
@@ -60,15 +68,17 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    const { name, description } = body;
-    if (!name || !description) {
+    if (!isProfileDataType(body)) {
         return NextResponse.json(
-            { error: 'name and description are required' },
+            { error: 'Invalid JSON body' },
             { status: 400, statusText: 'Bad Request' }
         );
-    }
+    };
 
-    const result = writeData({ name, description });
+    const result = writeData({
+        name: body.name,
+        description: body.description
+    });
     if (!result.success) {
         return NextResponse.json(
             { error: 'Failed to write data' },
@@ -79,8 +89,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
         success: true,
         data: {
-            name: name,
-            description: description
+            name: body.name,
+            description: body.description
         }
     });
 }
