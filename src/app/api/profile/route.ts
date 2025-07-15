@@ -3,19 +3,22 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/src/app/api/auth/[...nextauth]/route';
 import fs from 'fs';
 import path from 'path';
+import * as z from 'zod';
 
 
-type ProfileDataType = {
-    name: string;
-    description: string;
-}
+const ProfileSchema = z.object({
+    name: z.string(),
+    description: z.string(),
+});
+
+type ProfileType = z.infer<typeof ProfileSchema>;
 
 const dataPath = path.join(process.cwd(), 'src/data/profile.json');
 
 function readData() {
     if (!fs.existsSync(dataPath)) return {};
     const data = fs.readFileSync(dataPath, 'utf-8');
-    const result: ProfileDataType = JSON.parse(data);
+    const result: ProfileType = JSON.parse(data);
     return result;
 }
 
@@ -27,7 +30,7 @@ export async function GET() {
 function writeData({
     name,
     description
-}: ProfileDataType) {
+}: ProfileType) {
     try {
         fs.writeFileSync(dataPath, JSON.stringify({
             name,
@@ -40,14 +43,6 @@ function writeData({
     }
 }
 
-function isProfileDataType(obj: any) {
-    return (
-        obj &&
-        typeof obj.name === 'string' &&
-        typeof obj.description === 'string'
-    )
-}
-
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -57,7 +52,7 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    let body: ProfileDataType;
+    let body: ProfileType;
     try {
         body = await req.json();
     } catch (error) {
@@ -68,18 +63,21 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    if (!isProfileDataType(body)) {
+    const validationResult = ProfileSchema.safeParse(body);
+    if (!validationResult.success) {
         return NextResponse.json(
             { error: 'Invalid JSON body' },
             { status: 400, statusText: 'Bad Request' }
         );
     };
 
-    const result = writeData({
-        name: body.name,
-        description: body.description
+    const data = validationResult.data;
+
+    const writeResult = writeData({
+        name: data.name,
+        description: data.description
     });
-    if (!result.success) {
+    if (!writeResult.success) {
         return NextResponse.json(
             { error: 'Failed to write data' },
             { status: 500, statusText: 'Internal Server Error' }
@@ -89,8 +87,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
         success: true,
         data: {
-            name: body.name,
-            description: body.description
+            name: data.name,
+            description: data.description
         }
     });
 }
