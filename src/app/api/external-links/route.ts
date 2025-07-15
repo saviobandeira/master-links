@@ -3,24 +3,25 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/src/app/api/auth/[...nextauth]/route';
+import * as z from 'zod';
 
 
-type DataItemsType = {
-    name: string;
-    url: string;
-}
+const ExternalLinkSchema = z.object({
+    category: z.string(),
+    items: z.array(z.object({
+        name: z.string(),
+        url: z.url()
+    })),
+});
 
-type DataType = {
-    category: string;
-    items: DataItemsType[];
-}
+type ExternalLinkType = z.infer<typeof ExternalLinkSchema>;
 
 const dataPath = join(process.cwd(), 'src/data/externalLinks.json');
 
 function readData() {
     if (!existsSync(dataPath)) return [];
     const data = readFileSync(dataPath, 'utf-8');
-    const result: DataType[] = JSON.parse(data);
+    const result: ExternalLinkType[] = JSON.parse(data);
     return result;
 }
 
@@ -32,7 +33,7 @@ export async function GET() {
 function writeData({
     category,
     items,
-}: DataType) {
+}: ExternalLinkType) {
     try {
         const data = readData();
         data.push({
@@ -47,28 +48,6 @@ function writeData({
         console.error('Failed to write data:', error);
         return { success: false };
     };
-}
-
-function isDataItemType(obj: any) {
-    return (
-        obj &&
-        typeof obj === 'object' &&
-        typeof obj.name === 'string' &&
-        typeof obj.url === 'string'
-    );
-}
-
-function isDataType(obj: any) {
-    if (
-        !obj ||
-        typeof obj !== 'object' ||
-        typeof obj.category !== 'string' ||
-        !Array.isArray(obj.items)
-    ) {
-        return false;
-    };
-
-    return obj.items.every(isDataItemType);
 }
 
 export async function POST(req: NextRequest) {
@@ -91,15 +70,18 @@ export async function POST(req: NextRequest) {
         );
     };
 
-    if (!isDataType(body)) {
+    const validationResult = ExternalLinkSchema.safeParse(body);
+    if (!validationResult.success) {
         return NextResponse.json(
-            { error: 'Invalid or missing JSON body' },
+            { error: 'Invalid JSON body' },
             { status: 400, statusText: 'Bad Request' }
         );
     };
 
-    const result = writeData(body);
-    if (!result.success) {
+    const data = validationResult.data;
+
+    const writeResult = writeData(data);
+    if (!writeResult.success) {
         return NextResponse.json(
             { error: 'Failed to write data' },
             { status: 500, statusText: 'Internal Server Error' }
