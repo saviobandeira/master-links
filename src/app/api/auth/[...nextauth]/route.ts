@@ -37,10 +37,6 @@ const options = {
             }
         })
     ],
-    pages: {
-        signIn: '/auth/signin',
-        signOut: '/auth/signout'
-    },
     session: {
         strategy: 'jwt' as SessionStrategy,
         maxAge: 60 * 60,
