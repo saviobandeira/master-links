@@ -7,14 +7,26 @@ import * as z from 'zod';
 
 
 const ExternalLinkSchema = z.object({
+    id: z.string(),
     category: z.string(),
     items: z.array(z.object({
+        id: z.string(),
         name: z.string(),
         url: z.url()
     })),
 });
 
 type ExternalLinkType = z.infer<typeof ExternalLinkSchema>;
+
+const RequestSchema = z.object({
+    category: z.string(),
+    items: z.array(z.object({
+        name: z.string(),
+        url: z.url()
+    }))
+})
+
+type Request = z.infer<typeof RequestSchema>
 
 const dataPath = join(process.cwd(), 'src/data/externalLinks.json');
 
@@ -33,17 +45,28 @@ export async function GET() {
 function writeData({
     category,
     items,
-}: ExternalLinkType) {
+}: Request) {
     try {
         const data = readData();
+        const groupIndex = data.length;
+
+        const newItems = items.map((item, itemIndex) => {
+            return {
+                id: `item-${groupIndex}-${itemIndex}`,
+                name: item.name,
+                url: item.url
+            }
+        });
+
         data.push({
+            id: `group-${groupIndex}`,
             category,
-            items
-        })
+            items: newItems
+        });
+
         writeFileSync(dataPath, JSON.stringify(data, null, 2))
 
         return { success: true };
-
     } catch (error) {
         console.error('Failed to write data:', error);
         return { success: false };
@@ -70,7 +93,7 @@ export async function POST(req: NextRequest) {
         );
     };
 
-    const validationResult = ExternalLinkSchema.safeParse(body);
+    const validationResult = RequestSchema.safeParse(body);
     if (!validationResult.success) {
         return NextResponse.json(
             { error: 'Invalid JSON body' },
