@@ -1,42 +1,52 @@
 [
     {
+        "id": "group-0",
         "category": "default",
         "items": [
             {
+                "id": "item-0-0",
                 "name": "GitHub",
                 "url": "https://github.com/saviobandeira"
             },
             {
+                "id": "item-0-1",
                 "name": "Linkedin",
                 "url": "https://www.linkedin.com/in/savio-bandeira-79760620b/"
             },
             {
+                "id": "item-0-2",
                 "name": "Instagram",
                 "url": "https://www.instagram.com/savio.band/"
             },
             {
+                "id": "item-0-3",
                 "name": "Portifólio Online",
                 "url": "https://www.saviobandeira.com/"
             }
         ]
     },
     {
+        "id": "group-1",
         "category": "projetos online",
         "items": [
             {
+                "id": "item-1-0",
                 "name": "link-in-bio customizado",
                 "url": "https://paulotrindade.vercel.app/"
             }
         ]
     },
     {
+        "id": "group-2",
         "category": "código-fonte",
         "items": [
             {
+                "id": "item-2-0",
                 "name": "Sistema de Auto Atendimento pelo Whatsapp",
                 "url": "https://github.com/saviobandeira/pedeja_wppbot"
             },
             {
+                "id": "item-2-1",
                 "name": "Sistema Full-Stack para autenticação de usuario com FastAPI/JWT",
                 "url": "https://github.com/saviobandeira/user-authentication"
             }
