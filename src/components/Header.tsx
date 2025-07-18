@@ -1,8 +1,11 @@
 import Image from 'next/image';
 import AdminLinkButton from '@/src/components/Button/AdminLinkButton';
+import { getProfile } from '@/src/utils/services/profileService';
 
 
 export default function Header() {
+    const profile = getProfile();
+
     return (
         <header className='flex flex-col items-center pb-8'>
             <AdminLinkButton />
@@ -15,8 +18,8 @@ export default function Header() {
                     height={800}
                 />
             </div>
-            <h1 className=' font-bold text-lg mb-8'>Sávio Bandeira</h1>
-            <p>Plataforma para centralizar e compartilhar múltiplos links em uma única página personalizada.</p>    
+            <h1 className=' font-bold text-lg mb-8'>{profile.name}</h1>
+            <p>{profile.description}</p>    
         </header>
     );
 }
