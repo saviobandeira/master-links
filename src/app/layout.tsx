@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <SessionProvier>
           <div className='flex flex-col items-center'>
-            <div className=' max-w-xl w-full px-6 py-16'>
+            <div className=' max-w-md w-full px-6 py-16'>
               {children}
             </div>
           </div>
