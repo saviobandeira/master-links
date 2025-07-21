@@ -39,7 +39,7 @@ export default function SignIn() {
                 />
                 <h1 className=' font-bold text-lg mb-8'>Sávio Bandeira</h1>
             </div>
-            <p className='font-bold text-2xl pt-12 text-center'>Login</p>
+            <p className='font-bold text-2xl text-center'>Login</p>
             <p className='pt-2 text-center'>Entre com suas credencias </p>
             <form
                 className='flex flex-col gap-4 pt-12'
