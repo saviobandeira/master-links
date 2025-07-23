@@ -2,10 +2,13 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 
-export default function SignIn() {
+export default function SignIn({
+    children
+}: {
+    children: React.ReactNode
+}) {
     const router = useRouter();
 
     const [username, setUsername] = useState('');
@@ -30,14 +33,7 @@ export default function SignIn() {
     return (
         <div className=''>
             <div className='flex flex-col justify-center items-center'>
-                <Image
-                    className=' w-24 h-24 rounded-full mb-4'
-                    src='/images/profile-picture.png'
-                    alt='Foto de perfil'
-                    width={800}
-                    height={800}
-                />
-                <h1 className=' font-bold text-lg mb-8'>Sávio Bandeira</h1>
+                {children}
             </div>
             <p className='font-bold text-2xl text-center'>Login</p>
             <p className='pt-2 text-center'>Entre com suas credencias </p>
